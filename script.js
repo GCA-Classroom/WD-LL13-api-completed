@@ -20,11 +20,37 @@ It’s just here to help Copilot support you better.
 Start your code below 👇
 */
 
+// Target the output area and button
+const outputDiv = document.getElementById("output");
+const fetchButton = document.getElementById("fetch-btn");
 
+// Create a function to fetch and display data
+function getYesNoAnswer() {
+  fetch("https://yesno.wtf/api")
+    .then(function(response) {
+      return response.json(); // Convert response to JSON
+    })
+    .then(function(data) {
+      // Clear the output
+      outputDiv.innerHTML = "";
 
+      // Create elements for text and image
+      const answerText = document.createElement("p");
+      answerText.textContent = "Answer: " + data.answer;
 
-// Use this script to write your fetch logic
-// You'll fetch data from your selected API and display it on the page
+      const answerImage = document.createElement("img");
+      answerImage.src = data.image;
+      answerImage.alt = "Answer gif";
 
-// Example placeholder:
-console.log("Team activity starter code loaded.");
+      // Append elements to the output
+      outputDiv.appendChild(answerText);
+      outputDiv.appendChild(answerImage);
+    })
+    .catch(function(error) {
+      outputDiv.textContent = "Oops! Something went wrong.";
+      console.error(error);
+    });
+}
+
+// Add event listener to the button
+fetchButton.addEventListener("click", getYesNoAnswer);
